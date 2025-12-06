@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethan Smith - Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* ==================================== */
+        /* === BASE STYLE (Mode Laptop/Desktop) === */
+        /* ==================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: sans-serif; 
+            background-color: hsl(0, 0%, 0%); 
+            overflow-y: hidden; 
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* --- Transisi Horizontal Setup --- */
+        .content-wrapper {
+            position: relative; 
+            overflow-x: hidden; 
+            height: 100vh; 
+        }
+
+        .page-section {
+            width: 100vw; 
+            min-height: 100vh; 
+            flex-shrink: 0; 
+            
+            position: absolute; 
+            top: 0;
+            left: 0;
+            transform: translateX(100vw); 
+            transition: transform 0.7s ease-in-out; 
+            
+            display: block; 
+            padding: 50px 5%; 
+            color: white;
+            overflow-y: auto; 
+        }
+
+        #home {
+            transform: translateX(0);
+            /* Memastikan Home sama sekali tidak bisa di-scroll vertikal di Desktop */
+            overflow-y: hidden !important; 
+        }
+
+        /* --- Hero Section (Desktop) --- */
+        .hero-section {
+            background-image: none; 
+            background-size: cover;
+            background-position: center;
+            overflow: hidden; 
+            padding: 0; 
+            display: flex; 
+            align-items: center; 
+            justify-content: flex-start;
+            position: relative;
+            z-index: 1; 
+        }
+
+        /* Animasi Background Gerak-Gerak/Muter */
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('images/background-image.jpg'); 
+            background-size: cover;
+            background-position: center;
+            z-index: -1; 
+            animation: slowZoomRotate 30s infinite alternate ease-in-out;
+            transform-origin: center center;
+        }
+        @keyframes slowZoomRotate {
+            0% {
+                transform: scale(1) rotate(0deg);
+            }
+            100% {
+                transform: scale(1.05) rotate(0.5deg); 
+            }
+        }
+        
+        .overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            /* GRADIENT BIRU */
+            background: radial-gradient(circle at 70% 50%, rgba(0, 100, 200, 0.2), rgba(0, 0, 0, 0.8));
+            z-index: 1;
+        }
+
+        .hero-content {
+            padding: 50px 5%; 
+            position: relative; 
+            z-index: 2; 
+            flex: 1; 
+            max-width: 90%; 
+        }
+        
+        /* REVISI DESKTOP: WADAH SIDE-BY-SIDE */
+        .hero-main-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+        }
+        
+        /* REVISI DESKTOP: Ukuran Tagline dan Project Showcase */
+        .main-tagline { 
+            width: %; 
+        }
+        
+        /* Styling untuk Logo Gambar (PNG) */
+        .logo-image {
+            width: 150px; 
+            height: auto;
+            margin-bottom: 50px; 
+            display: block;
+        }
+        
+        .main-tagline h2 { font-size: 4rem; font-weight: 900; line-height: 1.1; margin-bottom: 20px; }
+        .highlight { color: red; }
+        .main-tagline p { font-size: 1rem; line-height: 1.6; margin-bottom: 40px; color: #ccc; max-width: 80%; }
+        .project-button { display: flex; align-items: center; gap: 15px; cursor: pointer; transition: color 0.3s; }
+        .project-button .circle { display: flex; justify-content: center; align-items: center; width: 100px; height: 100px; border: 1px solid #fff; border-radius: 50%; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px; position: relative; transform: rotate(-10deg); }
+        .project-button i { font-size: 1.5rem; }
+
+        .hero-avatar {
+            position: absolute; top: 0; right: 0; width: 50%; height: 100%; z-index: 2; 
+            background-image: url('images/avatar.png'); background-size: contain; background-repeat: no-repeat; 
+            background-position: right center;
+        }
+
+        .social-nav { position: absolute; top: 20px; right: 70px; z-index: 10; display: flex; gap: 20px; }
+        .social-nav a { color: #ccc; font-size: 1.2rem; transition: color 0.3s; }
+        .social-nav a:hover { color: red; }
+
+        /* --- Navigasi Vertikal (Desktop) --- */
+        .side-nav {
+            position: fixed; top: 50%; right: 20px; transform: translateY(-50%); z-index: 20; 
+            background-color: rgba(255, 255, 255, 0.05); border-radius: 10px; backdrop-filter: blur(5px);
+            padding: 10px 5px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .side-nav ul { list-style: none; display: flex; flex-direction: column; gap: 15px; }
+        .side-nav li a { display: block; padding: 10px; color: #fff; font-size: 1.2rem; border-radius: 50%; transition: background-color 0.3s, color 0.3s; }
+        .side-nav li.active a, .side-nav li a:hover { background-color: red; color: #fff; }
+
+        /* Gaya Konten Demo */
+        section h2 { text-align: center; margin-bottom: 30px; padding-top: 50px; font-size: 2.5rem; }
+        .dummy-content { width: 80%; margin: 0 auto; line-height: 1.8; font-size: 1.1rem; background-color: rgba(0, 0, 0, 0.2); padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+
+        /* --- KEYFRAMES UNTUK AUTO-SCROLL --- */
+        @keyframes autoScroll {
+            0% {
+                transform: translateX(0);
+            }
+            /* Geser ke kiri sejauh kira-kira 2 item proyek + gap */
+            100% {
+                transform: translateX(-540px); 
+            }
+        }
+
+        /* --- PROJECT SHOWCASE SLIDER CSS --- */
+        .project-showcase {
+            margin-top: 0; 
+            width: 40%; 
+            
+            overflow-x: auto; 
+            
+            padding-bottom: 20px; 
+            
+            position: relative;
+            min-width: 0;
+            
+            mask-image: linear-gradient(to right, 
+                transparent 0%, black 5%, black 95%, transparent 100%);
+        }
+
+        .project-list-wrapper {
+            display: flex;
+            gap: 20px;
+            padding: 10px 0;
+            width: max-content; 
+            min-width: 100%; 
+            
+            /* KECEPATAN DIREVISI: 15 detik */
+            animation: autoScroll 15s linear infinite alternate;
+        }
+
+        /* PAUSE ANIMASI KETIKA KURSOR DI ATAS PROJECT SHOWCASE */
+        .project-showcase:hover .project-list-wrapper {
+            animation-play-state: paused;
+        }
+        
+        /* REVISI: Sembunyikan Scrollbar di Desktop/Global View */
+        .project-showcase::-webkit-scrollbar {
+            display: none; 
+        }
+        .project-showcase {
+            -ms-overflow-style: none;  
+            scrollbar-width: none; 
+        }
+
+        .project-item {
+            width: 250px; 
+            height: 150px; 
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+            cursor: grab;
+            flex-shrink: 0; 
+        }
+
+        /* ==================================== */
+        /* === BACKGROUND GRADIENT ABOUT ME === */
+        /* ==================================== */
+        #about {
+            background: linear-gradient(135deg, #1f2733 0%, #0d0e14 100%);
+        }
+
+        /* ==================================== */
+        /* === MEDIA QUERY (Mode HP / Mobile) === */
+        /* ==================================== */
+        @media (max-width: 768px) {
+            
+            /* --- Navigasi Bawah (Mobile) --- */
+            .side-nav {
+                top: auto; 
+                bottom: 0; 
+                right: 0;
+                left: 0;
+                transform: none; 
+                width: 100%; 
+                border-radius: 0; 
+                padding: 10px 0;
+                box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5); 
+            }
+
+            .side-nav ul { 
+                flex-direction: row; 
+                justify-content: space-around; 
+            }
+
+            /* --- Konten Utama (Mobile: Tetap Horizontal/Slide) --- */
+            .page-section {
+                padding-bottom: 80px; 
+                overflow-y: auto !important; 
+            }
+            
+            /* REVISI MOBILE: Home bisa di-scroll */
+            #home {
+                overflow-y: auto !important; 
+            }
+            
+            .hero-section {
+                flex-direction: column;
+                justify-content: flex-start;
+                text-align: center;
+            }
+            
+            .hero-content {
+                max-width: 100%;
+                padding: 50px 5%; 
+                order: 2; 
+            }
+            
+            /* REVISI MOBILE: Wadah side-by-side jadi stack */
+            .hero-main-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .main-tagline { 
+                width: 100%; 
+            }
+
+            /* REVISI MOBILE: Project Showcase */
+            .project-showcase {
+                margin-top: 20px; 
+                width: 100%; 
+                padding-left: 5%; 
+                padding-right: 5%;
+                
+                /* Di mobile, scrollbar tidak disembunyikan agar user bisa geser */
+                overflow-x: auto; 
+            }
+            
+            /* Matikan Animasi Otomatis di Mobile */
+            .project-showcase .project-list-wrapper {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="side-nav">
+        <ul>
+            <li class="active"><a href="#home" data-section="home"><i class="fas fa-home"></i></a></li>
+            <li><a href="#about" data-section="about"><i class="fas fa-user"></i></a></li>
+            <li><a href="#services" data-section="services"><i class="fas fa-layer-group"></i></a></li>
+            <li><a href="#portfolio" data-section="portfolio"><i class="fas fa-grip"></i></a></li>
+            <li><a href="#blog" data-section="blog"><i class="fas fa-comment-dots"></i></a></li>
+            <li><a href="#contact" data-section="contact"><i class="fas fa-envelope"></i></a></li>
+        </ul>
+    </nav>
+    
+    <div class="content-wrapper">
+        
+        <header id="home" class="page-section hero-section" style="background-color: #0d0e14;">
+            <div class="overlay"></div>
+            <div class="hero-content">
+                <img src="images/logo-placeholder.png" alt="Ethan Smith Logo" class="logo-image">
+                
+                <div class="hero-main-content">
+                    <div class="main-tagline">
+                        <h2>Transforming Ideas Into <span class="highlight">Digital Reality</span></h2>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptate, exercitationem harum, quia nulla temporibus deleniti libero veniam vero beatae numquam ducimus illum ab similique ipsam tempore fugit quod laudantium debitis.</p>
+                        <div class="project-button">
+                            <span class="circle">My Projects</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="project-showcase">
+                        <div class="project-list-wrapper">
+                            <img src="images/project-1.png" alt="Project 1" class="project-item">
+                            <img src="images/project-2.png" alt="Project 2" class="project-item">
+                            <img src="images/project-3.png" alt="Project 3" class="project-item">
+                            <img src="images/project-4.png" alt="Project 4" class="project-item">
+                            <img src="images/project-5.png" alt="Project 5" class="project-item">
+                        </div>
+                    </div>
+                </div>
+                </div>
+            <div class="hero-avatar"></div>
+            <div class="social-nav">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-dribbble"></i></a>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+            </div>
+        </header>
+
+        <section id="about" class="page-section">
+            <h2>About Me</h2>
+            
+            <div class="about-content-intro">
+                <div id="owner-photo" class="owner-photo-container">
+                    <div class="owner-photo"></div>
+                </div>
+                
+                <div class="owner-info">
+                    <h3>Halo, Saya [Nama CEO]</h3>
+                    <p>CEO & Founder di [Nama Brand/Perusahaan]</p>
+                    
+                    <div id="typing-output" class="typing-text"></div>
+                </div>
+            </div>
+
+            <div class="dummy-content" style="width: 80%; margin-top: 50px;">
+                <h3 style="color: red; margin-bottom: 15px;">Talenta Lahir... (Sejarah PT)</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum, voluptas. Quidem minima quo, vitae similique inventore velit, sint, esse eaque ad asperiores non autem. Quam vitae voluptatem minima? Aut, dolor! Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, debitis.</p>
+                <br>
+                <p>Quidem minima quo, vitae similique inventore velit, sint, esse eaque ad asperiores non autem. Quam vitae voluptatem minima? Aut, dolor! Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, debitis. Quidem minima quo, vitae similique inventore velit, sint, esse eaque ad asperiores non autem. Quam vitae voluptatem minima? Aut, dolor! Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, debitis. Quidem minima quo, vitae similique inventore velit, sint, esse eaque ad asperiores non autem.</p>
+                <br>
+                <p>Quidem minima quo, vitae similique inventore velit, sint, esse eaque ad asperiores non autem. Quam vitae voluptatem minima? Aut, dolor! Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, debitis.</p>
+                <p>Quidem minima quo, vitae similique inventore velit, sint, esse eaque ad asperiores non autem. Quam vitae voluptatem minima? Aut, dolor! Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, debitis.</p>
+                <p>Quidem minima quo, vitae similique inventore velit, sint, esse eaque ad asperiores non autem. Quam vitae voluptatem minima? Aut, dolor! Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, debitis.</p>
+                <p>Quidem minima quo, vitae similique inventore velit, sint, esse eaque ad asperiores non autem. Quam vitae voluptatem minima? Aut, dolor! Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, debitis.</p>
+            </div>
+        </section>
+        
+        <section id="services" class="page-section" style="background-color: #36393f;">
+            <h2>Services (Bisa di Scroll)</h2>
+            <p class="dummy-content">Layanan 1</p>
+            <p class="dummy-content">Layanan 2</p>
+            <p class="dummy-content">Layanan 3</p>
+            <p class="dummy-content">Layanan 4</p>
+            <p class="dummy-content">Layanan 5 (Konten yang panjang)</p>
+            <p class="dummy-content">Layanan 6</p>
+            <p class="dummy-content">Layanan 7</p>
+            <p class="dummy-content">Layanan 8</p>
+            <p class="dummy-content">Layanan 9</p>
+        </section>
+        
+        <section id="portfolio" class="page-section" style="background-color: #2c2f33;">
+            <h2>Portfolio (Bisa di Scroll)</h2>
+            <p class="dummy-content">Proyek A</p>
+            <p class="dummy-content">Proyek B</p>
+            <p class="dummy-content">Proyek C</p>
+        </section>
+        
+        <section id="blog" class="page-section" style="background-color: #36393f;">
+            <h2>Blog (Bisa di Scroll)</h2>
+            <p class="dummy-content">Postingan Terbaru 1</p>
+            <p class="dummy-content">Postingan Terbaru 2</p>
+        </section>
+        
+        <section id="contact" class="page-section" style="background-color: #2c2f33;">
+            <h2>Contact (Bisa di Scroll)</h2>
+            <p class="dummy-content">Hubungi kami melalui formulir di bawah ini.</p>
+        </section>
+
+    </div> 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('.side-nav a');
+            const sections = document.querySelectorAll('.page-section');
+            const sectionIds = Array.from(sections).map(section => section.id);
+            
+            // --- FUNGSI UNTUK UI ABOUT ME ---
+            const textToType = "Selamat datang! Saya [Nama CEO], CEO di [Nama Brand/Perusahaan]. Kami percaya bahwa inovasi adalah kunci digital. Kami siap membantu Anda mewujudkan visi digital Anda dengan solusi terbaik dan layanan yang transparan.";
+            const typingOutputElement = document.getElementById('typing-output');
+            const photoElement = document.getElementById('owner-photo');
+            let charIndex = 0;
+
+            function typeWriter() {
+                if (typingOutputElement && charIndex < textToType.length) {
+                    typingOutputElement.innerHTML += textToType.charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeWriter, 40); // Kecepatan mengetik
+                } else if (typingOutputElement) {
+                    typingOutputElement.style.borderRight = 'none'; 
+                }
+            }
+
+
+            // Fungsi utama untuk menggeser/mengubah tampilan section
+            function goToSection(index) {
+                
+                // 1. Lakukan Transisi Horizontal TERLEBIH DAHULU
+                sections.forEach((section, i) => {
+                    if (i === index) {
+                        section.style.transform = 'translateX(0)';
+                    } else if (i < index) {
+                        section.style.transform = 'translateX(-100vw)';
+                    } else {
+                        section.style.transform = 'translateX(100vw)';
+                    }
+                });
+                
+                // 2. Tunda Reset Scroll (50 milidetik) + Logic Animasi
+                setTimeout(() => {
+                    // Reset Scroll Jaminan (Masalah Windows)
+                    window.scrollTo(0, 0);
+                    document.documentElement.scrollTop = 0; 
+                    document.body.scrollTop = 0; 
+                    
+                    // Reset Scroll Internal SEMUA Section
+                    sections.forEach(section => {
+                        section.scrollTop = 0;
+                        section.scrollLeft = 0; 
+                    });
+
+                    // 3. Logic Animasi Foto dan Typing (Hanya di About)
+                    if (sectionIds[index] === 'about') {
+                        // A. Animasi Foto (Fade In)
+                        if (photoElement) {
+                            photoElement.classList.add('animate-in');
+                        }
+
+                        // B. Efek Typing
+                        charIndex = 0;
+                        if (typingOutputElement) {
+                            typingOutputElement.innerHTML = '';
+                            typingOutputElement.style.borderRight = '3px solid white';
+                            typeWriter(); 
+                        }
+                        
+                    } else {
+                        // Reset animasi saat keluar dari About
+                        if (photoElement) {
+                            photoElement.classList.remove('animate-in');
+                        }
+                    }
+                }, 50); // Delay 50ms (Dipercepat)
+
+                // 4. Perbarui Kelas Active di Navigasi
+                navLinks.forEach(nav => nav.parentElement.classList.remove('active'));
+                const activeLink = document.querySelector(`.side-nav a[href="#${sectionIds[index]}"]`);
+                if (activeLink) {
+                    activeLink.parentElement.classList.add('active');
+                }
+            }
+
+            // Fungsi Klik
+            navLinks.forEach((link, index) => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    goToSection(index);
+                });
+            });
+
+            // Inisialisasi: Pastikan halaman pertama (index 0) aktif saat dimuat
+            goToSection(0); 
+        });
+    </script>
+</body>
+</html>
